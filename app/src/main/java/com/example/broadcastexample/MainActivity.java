@@ -16,6 +16,7 @@ import com.example.broadcastexample.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     View view;
+    BroadcastExample broadcastExample = new BroadcastExample();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +25,24 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         view =binding.getRoot();
         setContentView(view);
-        BroadcastExample broadcastExample = new BroadcastExample();
-        registerReceiver(broadcastExample, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
 //            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 //            return insets;
 //        });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(broadcastExample, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastExample);
     }
 }
